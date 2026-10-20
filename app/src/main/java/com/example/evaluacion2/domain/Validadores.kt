@@ -41,4 +41,11 @@ object Validadores {
         if (hora(inicio) != null) return null
         return if (aMinutos(fin) <= aMinutos(inicio)) "Debe ser posterior a la hora de inicio" else null
     }
+    fun monto(v: String): String? = when {
+        v.isBlank() -> "El monto es obligatorio"
+        v.toIntOrNull() == null -> "Solo números"
+        v.toInt() < 1000 -> "El monto mínimo es $1.000"
+        v.toInt() > 500000 -> "El monto máximo es $500.000"
+        else -> null
+    }
 }

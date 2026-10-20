@@ -5,7 +5,8 @@ data class ReservaFomrulario(
     val correo: String ="",
     val telefono: String = "",
     val horaInicio: String ="",
-    val horaFin : String = "")
+    val horaFin : String = "",
+    val monto: String = "")
 
 
 data class ReservaErrores(
@@ -13,4 +14,5 @@ data class ReservaErrores(
     val correo : String? = null,
     val telefono: String? = null,
     val horaInicio: String? =null,
-    val horaFin : String? = null)
+    val horaFin : String? = null,
+    val monto : String? = null)

@@ -72,6 +72,16 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             supportingText = { errores.horaFin?.let { Text(it) } },
             modifier = Modifier.fillMaxWidth()
         )
+        OutlinedTextField(
+            value = formulario.monto,
+            onValueChange = { viewModel.actualizarMonto(it) },
+            label = { Text("Monto del arriendo ($)") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+            isError = errores.monto != null,
+            supportingText = { errores.monto?.let { Text(it) } },
+            modifier = Modifier.fillMaxWidth()
+        )
         Button(
             onClick = { viewModel.validarFormulario() },
             modifier = Modifier.fillMaxWidth()
