@@ -14,7 +14,10 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.evaluacion2.ui.componentes.CampoFecha
 import com.example.evaluacion2.ui.componentes.CampoValidado
+import com.example.evaluacion2.ui.componentes.FilaCheckbox
+import com.example.evaluacion2.ui.componentes.FilaSwitch
 import com.example.evaluacion2.viewmodel.ReservaViewModel
 
 @Composable
@@ -31,6 +34,11 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             onCambio = { viewModel.actualizarVecino(it) },
             etiqueta = "Nombre del vecino/a",
             error = errores.vecino
+        )
+        CampoFecha(
+            fecha = formulario.fecha,
+            onFecha = { viewModel.actualizarFecha(it) },
+            error = errores.fecha
         )
         OutlinedTextField(
             value = formulario.correo,
@@ -79,6 +87,17 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             isError = errores.monto != null,
             supportingText = { errores.monto?.let { Text(it) } },
             modifier = Modifier.fillMaxWidth()
+        )
+        FilaSwitch(
+            texto = "¿Usará la cocina?",
+            activo = formulario.usaCocina,
+            onCambio = { viewModel.actualizarUsaCocina(it) }
+        )
+        FilaCheckbox(
+            texto = "Acepto el reglamento del salón",
+            marcado = formulario.aceptaReglamento,
+            onCambio = { viewModel.actualizarReglamento(it) },
+            error = errores.aceptaReglamento
         )
         Button(
             onClick = { viewModel.validarFormulario() },

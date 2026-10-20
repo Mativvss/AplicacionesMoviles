@@ -6,7 +6,10 @@ data class ReservaFomrulario(
     val telefono: String = "",
     val horaInicio: String ="",
     val horaFin : String = "",
-    val monto: String = "")
+    val monto: String = "",
+    val fecha : Long? = null,
+    val usaCocina : Boolean = false,
+    val aceptaReglamento: Boolean = false)
 
 
 data class ReservaErrores(
@@ -15,4 +18,6 @@ data class ReservaErrores(
     val telefono: String? = null,
     val horaInicio: String? =null,
     val horaFin : String? = null,
-    val monto : String? = null)
+    val monto : String? = null,
+    val fecha: String? = null,
+    val aceptaReglamento: String? = null)
