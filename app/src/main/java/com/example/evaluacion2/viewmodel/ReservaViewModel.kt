@@ -1,14 +1,28 @@
 package com.example.evaluacion2.viewmodel
 
+import android.app.Application
+import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.evaluacion2.data.AppDatabase
+import com.example.evaluacion2.data.Reserva
+import com.example.evaluacion2.data.ReservaRepository
 import com.example.evaluacion2.domain.Validadores
 import com.example.evaluacion2.model.ReservaErrores
 import com.example.evaluacion2.model.ReservaFormulario
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 
-class ReservaViewModel: ViewModel() {
+class ReservaViewModel(app: Application) : AndroidViewModel(app) {
+
+    private val repo = ReservaRepository(AppDatabase.getInstance(app).reservaDao())
+
+    val reservas: StateFlow<List<Reserva>> =
+        repo.reservas.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), emptyList())
     private val _formulario = MutableStateFlow(ReservaFormulario())
     val formulario: StateFlow<ReservaFormulario> = _formulario.asStateFlow()
 
@@ -76,6 +90,28 @@ class ReservaViewModel: ViewModel() {
     fun actualizarReglamento(valor: Boolean){
         _formulario.value = _formulario.value.copy(aceptaReglamento = valor)
         _errores.value = _errores.value.copy(aceptaReglamento = Validadores.reglamento(valor))
+    }
+
+    fun guardar(alExito: () -> Unit) {
+        if (!validarFormulario()) return
+        val f = _formulario.value
+        viewModelScope.launch {
+            repo.guardar(
+                Reserva(
+                    vecino = f.vecino.trim(),
+                    correo = f.correo.trim(),
+                    telefono = f.telefono,
+                    horaInicio = f.horaInicio.trim(),
+                    horaFin = f.horaFin.trim(),
+                    fecha = f.fecha!!,
+                    monto = f.monto.toInt(),
+                    usaCocina = f.usaCocina
+                )
+            )
+            _formulario.value = ReservaFormulario()
+            _errores.value = ReservaErrores()
+            alExito()
+        }
     }
 
 

@@ -154,7 +154,7 @@ fun FilaCheckbox(
     }
 }
 
-private fun formatoFecha(milisegundos: Long): String {
+fun formatoFecha(milisegundos: Long): String {
     val formato = SimpleDateFormat("dd/MM/yyyy", Locale("es", "CL"))
     formato.timeZone = TimeZone.getTimeZone("UTC")
     return formato.format(Date(milisegundos))

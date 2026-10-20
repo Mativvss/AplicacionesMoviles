@@ -1,5 +1,6 @@
 package com.example.evaluacion2.ui.screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,6 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.evaluacion2.ui.componentes.CampoFecha
@@ -99,8 +101,13 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             onCambio = { viewModel.actualizarReglamento(it) },
             error = errores.aceptaReglamento
         )
+        val contexto = LocalContext.current
         Button(
-            onClick = { viewModel.validarFormulario() },
+            onClick = {
+                viewModel.guardar {
+                    Toast.makeText(contexto, "Reserva registrada", Toast.LENGTH_SHORT).show()
+                }
+            },
             modifier = Modifier.fillMaxWidth()
         ) {
             Text("Registrar solicitud")
