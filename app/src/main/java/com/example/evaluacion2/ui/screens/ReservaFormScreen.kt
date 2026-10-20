@@ -26,6 +26,15 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
         verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
         OutlinedTextField(
+            value = formulario.vecino,
+            onValueChange = { viewModel.actualizarVecino(it) },
+            label = { Text("Nombre del vecino/a") },
+            singleLine = true,
+            isError = errores.vecino != null,
+            supportingText = { errores.vecino?.let { Text(it) } },
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(
             value = formulario.telefono,
             onValueChange = {viewModel.actualizarTelefono(it)},
             label = { Text("Teléfono") },
