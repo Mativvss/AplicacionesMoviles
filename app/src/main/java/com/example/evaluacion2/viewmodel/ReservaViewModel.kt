@@ -3,14 +3,14 @@ package com.example.evaluacion2.viewmodel
 import androidx.lifecycle.ViewModel
 import com.example.evaluacion2.domain.Validadores
 import com.example.evaluacion2.model.ReservaErrores
-import com.example.evaluacion2.model.ReservaFomrulario
+import com.example.evaluacion2.model.ReservaFormulario
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
 class ReservaViewModel: ViewModel() {
-    private val _formulario = MutableStateFlow(ReservaFomrulario())
-    val formulario: StateFlow<ReservaFomrulario> = _formulario.asStateFlow()
+    private val _formulario = MutableStateFlow(ReservaFormulario())
+    val formulario: StateFlow<ReservaFormulario> = _formulario.asStateFlow()
 
     private val _errores = MutableStateFlow(ReservaErrores())
     val errores: StateFlow<ReservaErrores> = _errores.asStateFlow()

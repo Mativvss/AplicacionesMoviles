@@ -1,6 +1,6 @@
 package com.example.evaluacion2.model
 
-data class ReservaFomrulario(
+data class ReservaFormulario(
     val vecino: String ="",
     val correo: String ="",
     val telefono: String = "",
