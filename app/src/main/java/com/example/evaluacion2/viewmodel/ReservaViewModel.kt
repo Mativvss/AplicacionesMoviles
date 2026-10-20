@@ -24,6 +24,7 @@ class ReservaViewModel: ViewModel() {
         val f = _formulario.value
         val nuevos = ReservaErrores(
             vecino = Validadores.nombre(f.vecino),
+            correo = Validadores.correo(f.correo),
             telefono = Validadores.telefono(f.telefono))
         _errores.value = nuevos
         return nuevos == ReservaErrores()
@@ -32,6 +33,10 @@ class ReservaViewModel: ViewModel() {
     fun actualizarVecino(valor: String){
         _formulario.value = _formulario.value.copy(vecino=valor)
         _errores.value = _errores.value.copy(vecino = Validadores.nombre(valor))
+    }
+    fun actualizarCorreo(valor: String){
+        _formulario.value = _formulario.value.copy(correo = valor)
+        _errores.value = _errores.value.copy(correo = Validadores.correo(valor))
     }
 
 }

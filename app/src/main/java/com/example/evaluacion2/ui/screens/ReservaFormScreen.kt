@@ -35,6 +35,16 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             modifier = Modifier.fillMaxWidth()
         )
         OutlinedTextField(
+            value = formulario.correo,
+            onValueChange = { viewModel.actualizarCorreo(it) },
+            label = { Text("Ingrese su correo") },
+            singleLine = true,
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+            isError = errores.correo != null,
+            supportingText = { errores.correo?.let { Text(it) } },
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(
             value = formulario.telefono,
             onValueChange = {viewModel.actualizarTelefono(it)},
             label = { Text("Teléfono") },

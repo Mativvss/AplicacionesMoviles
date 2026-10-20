@@ -18,4 +18,9 @@ object Validadores {
 
         else -> null
     }
+    fun correo(v: String): String? = when {
+        v.isBlank() -> "El correo es obligatorio"
+        !Regex("^[\\w.+-]+@[\\w-]+\\.[\\w.]+$").matches(v.trim()) -> "Correo no válido (ej: nombre@dominio.cl)"
+        else -> null
+    }
 }
