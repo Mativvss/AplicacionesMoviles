@@ -1,0 +1,30 @@
+package com.example.evaluacion2.viewmodel
+
+import androidx.lifecycle.ViewModel
+import com.example.evaluacion2.domain.Validadores
+import com.example.evaluacion2.model.ReservaErrores
+import com.example.evaluacion2.model.ReservaFomrulario
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
+class ReservaViewModel: ViewModel() {
+    private val _formulario = MutableStateFlow(ReservaFomrulario())
+    val formulario: StateFlow<ReservaFomrulario> = _formulario.asStateFlow()
+
+    private val _errores = MutableStateFlow(ReservaErrores())
+    val errores: StateFlow<ReservaErrores> = _errores.asStateFlow()
+
+    fun actualizarTelefono (valor: String) {
+        val limpio = valor.filter { it.isDigit()}.take(9)
+        _formulario.value = _formulario.value.copy(telefono = limpio)
+        _errores.value = _errores.value.copy(telefono = Validadores.telefono(limpio))
+    }
+    fun validarFormulario(): Boolean{
+        val f = _formulario.value
+        val nuevos = ReservaErrores(telefono = Validadores.telefono(f.telefono))
+        _errores.value = nuevos
+        return nuevos == ReservaErrores()
+    }
+
+}
