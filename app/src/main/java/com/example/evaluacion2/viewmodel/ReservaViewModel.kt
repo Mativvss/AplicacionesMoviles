@@ -62,4 +62,6 @@ class ReservaViewModel: ViewModel() {
         _formulario.value = _formulario.value.copy(monto = limpio)
         _errores.value = _errores.value.copy(monto = Validadores.monto(limpio))
     }
+
+
 }

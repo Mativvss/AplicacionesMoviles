@@ -14,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.evaluacion2.ui.componentes.CampoValidado
 import com.example.evaluacion2.viewmodel.ReservaViewModel
 
 @Composable
@@ -25,14 +26,11 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
         modifier = modifier.padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
-        OutlinedTextField(
-            value = formulario.vecino,
-            onValueChange = { viewModel.actualizarVecino(it) },
-            label = { Text("Nombre del vecino/a") },
-            singleLine = true,
-            isError = errores.vecino != null,
-            supportingText = { errores.vecino?.let { Text(it) } },
-            modifier = Modifier.fillMaxWidth()
+        CampoValidado(
+            valor = formulario.vecino,
+            onCambio = { viewModel.actualizarVecino(it) },
+            etiqueta = "Nombre del vecino/a",
+            error = errores.vecino
         )
         OutlinedTextField(
             value = formulario.correo,
