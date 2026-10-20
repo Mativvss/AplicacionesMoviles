@@ -25,7 +25,9 @@ class ReservaViewModel: ViewModel() {
         val nuevos = ReservaErrores(
             vecino = Validadores.nombre(f.vecino),
             correo = Validadores.correo(f.correo),
-            telefono = Validadores.telefono(f.telefono))
+            telefono = Validadores.telefono(f.telefono),
+            horaInicio = Validadores.hora(f.horaInicio),
+            horaFin = Validadores.rangoHoras(f.horaInicio,f.horaFin))
         _errores.value = nuevos
         return nuevos == ReservaErrores()
     }
@@ -38,5 +40,20 @@ class ReservaViewModel: ViewModel() {
         _formulario.value = _formulario.value.copy(correo = valor)
         _errores.value = _errores.value.copy(correo = Validadores.correo(valor))
     }
+    fun actualizarHoraInicio(valor : String){
+        _formulario.value = _formulario.value.copy(horaInicio = valor)
+        val fin = _formulario.value.horaFin
+        _errores.value = _errores.value.copy(
+            horaInicio = Validadores.hora(valor),
+            horaFin = if(fin.isBlank()) _errores.value.horaFin
+            else Validadores.rangoHoras(valor,fin)
+        )
+    }
 
+    fun actualizarHoraFin(valor: String){
+        _formulario.value = _formulario.value.copy(horaFin = valor)
+        _errores.value = _errores.value.copy(
+            horaFin = Validadores.rangoHoras(_formulario.value.horaInicio, valor)
+        )
+    }
 }

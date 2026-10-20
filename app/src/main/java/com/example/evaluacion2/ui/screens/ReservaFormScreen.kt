@@ -54,6 +54,24 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             supportingText = { errores.telefono?.let { Text(it) } },
             modifier = Modifier.fillMaxWidth()
         )
+        OutlinedTextField(
+            value = formulario.horaInicio,
+            onValueChange = { viewModel.actualizarHoraInicio(it) },
+            label = { Text("Hora de inicio (HH:mm)") },
+            singleLine = true,
+            isError = errores.horaInicio != null,
+            supportingText = { errores.horaInicio?.let { Text(it) } },
+            modifier = Modifier.fillMaxWidth()
+        )
+        OutlinedTextField(
+            value = formulario.horaFin,
+            onValueChange = { viewModel.actualizarHoraFin(it) },
+            label = { Text("Hora de fin (HH:mm)") },
+            singleLine = true,
+            isError = errores.horaFin != null,
+            supportingText = { errores.horaFin?.let { Text(it) } },
+            modifier = Modifier.fillMaxWidth()
+        )
         Button(
             onClick = { viewModel.validarFormulario() },
             modifier = Modifier.fillMaxWidth()
