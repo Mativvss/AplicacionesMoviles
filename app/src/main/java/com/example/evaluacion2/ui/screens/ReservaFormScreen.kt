@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -23,72 +23,60 @@ import com.example.evaluacion2.ui.componentes.FilaSwitch
 import com.example.evaluacion2.viewmodel.ReservaViewModel
 
 @Composable
-fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier){
+fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier = Modifier) {
     val formulario by viewModel.formulario.collectAsState()
     val errores by viewModel.errores.collectAsState()
+    val contexto = LocalContext.current
 
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier
+            .verticalScroll(rememberScrollState())
+            .padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
-        ){
+    ) {
         CampoValidado(
             valor = formulario.vecino,
             onCambio = { viewModel.actualizarVecino(it) },
             etiqueta = "Nombre del vecino/a",
             error = errores.vecino
         )
+        CampoValidado(
+            valor = formulario.correo,
+            onCambio = { viewModel.actualizarCorreo(it) },
+            etiqueta = "Correo",
+            error = errores.correo,
+            tipoTeclado = KeyboardType.Email
+        )
+        CampoValidado(
+            valor = formulario.telefono,
+            onCambio = { viewModel.actualizarTelefono(it) },
+            etiqueta = "Teléfono",
+            error = errores.telefono,
+            tipoTeclado = KeyboardType.Phone
+        )
         CampoFecha(
             fecha = formulario.fecha,
             onFecha = { viewModel.actualizarFecha(it) },
             error = errores.fecha
         )
-        OutlinedTextField(
-            value = formulario.correo,
-            onValueChange = { viewModel.actualizarCorreo(it) },
-            label = { Text("Ingrese su correo") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
-            isError = errores.correo != null,
-            supportingText = { errores.correo?.let { Text(it) } },
-            modifier = Modifier.fillMaxWidth()
+        CampoValidado(
+            valor = formulario.horaInicio,
+            onCambio = { viewModel.actualizarHoraInicio(it) },
+            etiqueta = "Hora de inicio (HH:mm)",
+            error = errores.horaInicio
         )
-        OutlinedTextField(
-            value = formulario.telefono,
-            onValueChange = {viewModel.actualizarTelefono(it)},
-            label = { Text("Teléfono") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Phone),
-            isError = errores.telefono != null,
-            supportingText = { errores.telefono?.let { Text(it) } },
-            modifier = Modifier.fillMaxWidth()
+        CampoValidado(
+            valor = formulario.horaFin,
+            onCambio = { viewModel.actualizarHoraFin(it) },
+            etiqueta = "Hora de fin (HH:mm)",
+            error = errores.horaFin
         )
-        OutlinedTextField(
-            value = formulario.horaInicio,
-            onValueChange = { viewModel.actualizarHoraInicio(it) },
-            label = { Text("Hora de inicio (HH:mm)") },
-            singleLine = true,
-            isError = errores.horaInicio != null,
-            supportingText = { errores.horaInicio?.let { Text(it) } },
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = formulario.horaFin,
-            onValueChange = { viewModel.actualizarHoraFin(it) },
-            label = { Text("Hora de fin (HH:mm)") },
-            singleLine = true,
-            isError = errores.horaFin != null,
-            supportingText = { errores.horaFin?.let { Text(it) } },
-            modifier = Modifier.fillMaxWidth()
-        )
-        OutlinedTextField(
-            value = formulario.monto,
-            onValueChange = { viewModel.actualizarMonto(it) },
-            label = { Text("Monto del arriendo ($)") },
-            singleLine = true,
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-            isError = errores.monto != null,
-            supportingText = { errores.monto?.let { Text(it) } },
-            modifier = Modifier.fillMaxWidth()
+        CampoValidado(
+            valor = formulario.monto,
+            onCambio = { viewModel.actualizarMonto(it) },
+            etiqueta = "Monto del arriendo (\$)",
+            error = errores.monto,
+            tipoTeclado = KeyboardType.Number
         )
         FilaSwitch(
             texto = "¿Usará la cocina?",
@@ -101,7 +89,6 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier= Modifier)
             onCambio = { viewModel.actualizarReglamento(it) },
             error = errores.aceptaReglamento
         )
-        val contexto = LocalContext.current
         Button(
             onClick = {
                 viewModel.guardar {
