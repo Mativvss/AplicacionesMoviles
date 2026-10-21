@@ -57,4 +57,7 @@ dependencies {
     implementation("androidx.compose.material:material-icons-core")
     implementation(libs.androidx.room.runtime)
     ksp(libs.androidx.room.compiler)
+    implementation("io.coil-kt:coil-compose:2.7.0")
+    implementation("androidx.compose.material:material-icons-extended")
+    implementation("androidx.lifecycle:lifecycle-runtime-compose:2.11.0")
 }

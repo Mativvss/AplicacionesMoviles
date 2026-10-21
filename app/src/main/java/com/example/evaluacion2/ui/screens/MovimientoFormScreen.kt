@@ -75,7 +75,6 @@ fun MovimientoFormScreen(
     val scope = rememberCoroutineScope()
     var uriPendiente by remember { mutableStateOf<Uri?>(null) }
 
-    // Recurso nativo: camara
     val camara = rememberLauncherForActivityResult(ActivityResultContracts.TakePicture()) { ok ->
         if (ok) uriPendiente?.let { vm.onComprobante(it.toString()) }
     }

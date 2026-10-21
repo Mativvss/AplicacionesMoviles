@@ -38,14 +38,12 @@ private enum class Pantalla { NUEVA_RESERVA, RESERVAS, FINANZAS, NUEVO_MOVIMIENT
 fun AppRaiz() {
     var pantalla by rememberSaveable { mutableStateOf(Pantalla.RESERVAS) }
 
-    // Un ViewModel por funcionalidad, compartido entre sus pantallas
     val reservaVm: ReservaViewModel = viewModel()
     val movimientoVm: MovimientoViewModel = viewModel()
 
     val snackbar = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
 
-    // Boton fisico "atras" en el formulario de movimientos: vuelve a Finanzas
     BackHandler(enabled = pantalla == Pantalla.NUEVO_MOVIMIENTO) {
         movimientoVm.limpiar()
         pantalla = Pantalla.FINANZAS
@@ -54,7 +52,6 @@ fun AppRaiz() {
     Scaffold(
         snackbarHost = { SnackbarHost(snackbar) },
         bottomBar = {
-            // La barra se oculta en el formulario de movimientos (pantalla extra)
             if (pantalla != Pantalla.NUEVO_MOVIMIENTO) {
                 NavigationBar {
                     NavigationBarItem(
