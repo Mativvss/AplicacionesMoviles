@@ -5,6 +5,7 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.evaluacion2.data.AppDatabase
+import com.example.evaluacion2.data.EstadoReserva
 import com.example.evaluacion2.data.Reserva
 import com.example.evaluacion2.data.ReservaRepository
 import com.example.evaluacion2.domain.Validadores
@@ -112,6 +113,13 @@ class ReservaViewModel(app: Application) : AndroidViewModel(app) {
             _errores.value = ReservaErrores()
             alExito()
         }
+    }
+    fun confirmar(id: Long) {
+        viewModelScope.launch { repo.cambiarEstado(id, EstadoReserva.CONFIRMADA) }
+    }
+
+    fun cancelar(id: Long) {
+        viewModelScope.launch { repo.cambiarEstado(id, EstadoReserva.CANCELADA) }
     }
 
 
