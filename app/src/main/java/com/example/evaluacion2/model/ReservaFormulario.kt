@@ -1,0 +1,23 @@
+package com.example.evaluacion2.model
+
+data class ReservaFormulario(
+    val vecino: String ="",
+    val correo: String ="",
+    val telefono: String = "",
+    val horaInicio: String ="",
+    val horaFin : String = "",
+    val monto: String = "",
+    val fecha : Long? = null,
+    val usaCocina : Boolean = false,
+    val aceptaReglamento: Boolean = false)
+
+
+data class ReservaErrores(
+    val vecino: String? = null,
+    val correo : String? = null,
+    val telefono: String? = null,
+    val horaInicio: String? =null,
+    val horaFin : String? = null,
+    val monto : String? = null,
+    val fecha: String? = null,
+    val aceptaReglamento: String? = null)
