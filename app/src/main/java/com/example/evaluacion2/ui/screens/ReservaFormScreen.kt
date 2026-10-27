@@ -1,6 +1,11 @@
 package com.example.evaluacion2.ui.screens
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -10,16 +15,19 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat
 import com.example.evaluacion2.ui.componentes.CampoFecha
 import com.example.evaluacion2.ui.componentes.CampoValidado
 import com.example.evaluacion2.ui.componentes.FilaCheckbox
 import com.example.evaluacion2.ui.componentes.FilaSwitch
+import com.example.evaluacion2.util.Notificaciones
 import com.example.evaluacion2.viewmodel.ReservaViewModel
 
 @Composable
@@ -27,6 +35,19 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier = Modifier
     val formulario by viewModel.formulario.collectAsState()
     val errores by viewModel.errores.collectAsState()
     val contexto = LocalContext.current
+    val lanzadorPermiso = rememberLauncherForActivityResult(
+        ActivityResultContracts.RequestPermission()
+    ) { }
+
+    LaunchedEffect(Unit) {
+        val sinPermiso = Build.VERSION.SDK_INT >= 33 &&
+                ContextCompat.checkSelfPermission(
+                    contexto, Manifest.permission.POST_NOTIFICATIONS
+                ) != PackageManager.PERMISSION_GRANTED
+        if (sinPermiso) {
+            lanzadorPermiso.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
 
     Column(
         modifier = modifier
@@ -91,8 +112,10 @@ fun ReservaFormScreen(viewModel: ReservaViewModel, modifier: Modifier = Modifier
         )
         Button(
             onClick = {
+                val nombre = formulario.vecino
                 viewModel.guardar {
                     Toast.makeText(contexto, "Reserva registrada", Toast.LENGTH_SHORT).show()
+                    Notificaciones.avisarReserva(contexto, nombre)
                 }
             },
             modifier = Modifier.fillMaxWidth()

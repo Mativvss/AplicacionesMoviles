@@ -6,11 +6,13 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import com.example.evaluacion2.ui.AppRaiz
 import com.example.evaluacion2.ui.theme.Evaluacion2Theme
+import com.example.evaluacion2.util.Notificaciones
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
+        Notificaciones.crearCanal(this)
         setContent {
             Evaluacion2Theme {
                 AppRaiz()
